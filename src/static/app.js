@@ -89,6 +89,50 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  document.getElementById("cancel-button").addEventListener("click", async () => {
+    const email = document.getElementById("email").value;
+    const activity = document.getElementById("activity").value;
+
+    if (!email || !activity) {
+      messageDiv.textContent = "Please provide both email and activity to cancel.";
+      messageDiv.className = "error";
+      messageDiv.classList.remove("hidden");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `/activities/${encodeURIComponent(activity)}/cancel?email=${encodeURIComponent(email)}`,
+        {
+          method: "POST",
+        }
+      );
+
+      const result = await response.json();
+
+      if (response.ok) {
+        messageDiv.textContent = result.message;
+        messageDiv.className = "success";
+        signupForm.reset();
+      } else {
+        messageDiv.textContent = result.detail || "An error occurred";
+        messageDiv.className = "error";
+      }
+
+      messageDiv.classList.remove("hidden");
+
+      // Hide message after 5 seconds
+      setTimeout(() => {
+        messageDiv.classList.add("hidden");
+      }, 5000);
+    } catch (error) {
+      messageDiv.textContent = "Failed to cancel signup. Please try again.";
+      messageDiv.className = "error";
+      messageDiv.classList.remove("hidden");
+      console.error("Error canceling signup:", error);
+    }
+  });
+
   // Initialize app
   fetchActivities();
 });
