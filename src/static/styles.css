@@ -134,6 +134,15 @@ button:hover {
   background-color: #3949ab;
 }
 
+button.cancel {
+  background-color: #c62828;
+  margin-left: 10px;
+}
+
+button.cancel:hover {
+  background-color: #e53935;
+}
+
 .message {
   margin-top: 20px;
   padding: 10px;
